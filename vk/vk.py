@@ -8,6 +8,7 @@ from aggregator.group import Group
 from aggregator.post import Post
 
 ACCESS_TOKEN = envutil.get_access_token()
+SERVICE_KEY = envutil.get_service_key()
 TARGET_GROUP = envutil.get_target_group()
 MAX_REQUEST_PER_SECOND = 3
 REQUEST_TIMESTAMPS = []  # newest -> oldest
@@ -15,7 +16,7 @@ REQUEST_TIMESTAMPS = []  # newest -> oldest
 
 def get_posts(group, count=100, offset=0):
     url = 'https://api.vk.com/method/wall.get?owner_id=-{}&count={}&offset={}&access_token={}'
-    url = url.format(group.id, count, offset, ACCESS_TOKEN)
+    url = url.format(group.id, count, offset, SERVICE_KEY)
 
     response = execute_request(url)
     response_json = response.json()
@@ -47,8 +48,8 @@ def get_groups(group_ids):
 
 
 def repost(from_group, post):
-    url = 'https://api.vk.com/method/wall.repost?object=wall-{}-{}&group_id={}'
-    url = url.format(from_group.id, post.id, TARGET_GROUP)
+    url = 'https://api.vk.com/method/wall.repost?object=wall-{}_{}&group_id={}&access_token={}'
+    url = url.format(from_group.id, post.id, TARGET_GROUP, ACCESS_TOKEN)
 
     response = execute_request(url)
     logging.debug(response.text)

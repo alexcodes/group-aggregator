@@ -13,6 +13,12 @@ def get_access_token():
     return env
 
 
+def get_service_key():
+    env = os.getenv("VK_SERVICEKEY")
+    check_not_null(env, "VK service key not defined")
+    return env
+
+
 def get_group_list():
     env = os.getenv("VK_GROUPS")
     check_not_null(env, "VK group list not defined")
